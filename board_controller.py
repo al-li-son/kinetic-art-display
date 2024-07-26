@@ -1,5 +1,6 @@
 import serial
 import numpy as np
+import time
 
 class DisplayBoard:
     def __init__(self, port, baudrate):
@@ -16,15 +17,16 @@ class DisplayBoard:
         # Run motors all the way up and back down in relative positioning mode
         self.move([630,630,630,630,630,630,630,630], absolute=False)
         self.move([-630,-630,-630,-630,-630,-630,-630,-630], absolute=False)
-        # Set home offset here
-        self.write_serial("G90")
-        self.write_serial("M428")
 
         # Back off
         self.move([30,30,30,30,30,30,30,30], absolute=False)
 
         # Reapproach
-        self.move([0,0,0,0,0,0,0,0,0], absolute=True)
+        self.move([-25,-25,-25,-25,-25,-25,-25,-25,-25], absolute=False)
+
+        # Set home offset here
+        self.write_serial("G90")
+        self.write_serial("M428")
     
     def move(self, positions, absolute=True):
         move_type_str = "absolute"
@@ -49,3 +51,16 @@ if __name__ == "__main__":
     BAUD_RATE = 250000
 
     board_0 = DisplayBoard(PORT, BAUD_RATE)
+
+    # Pause to establish connection or motors do weird things
+    time.sleep(3)
+
+    board_0.set_home()
+
+    for _ in range(1):
+        board_0.move([10, 90, 170, 250, 330, 410, 490, 570], absolute=True)
+        board_0.move([280, 280, 280, 280, 280, 280, 280, 280], absolute=True)
+        board_0.move([570, 490, 410, 330, 250, 170, 90, 10], absolute=True)
+        board_0.move([280, 280, 280, 280, 280, 280, 280, 280], absolute=True)
+
+    board_0.move([10, 10, 10, 10, 10, 10, 10, 10], absolute=True)
