@@ -76,27 +76,8 @@ if __name__ == "__main__":
     PORT = "/dev/ttyACM1"
     BAUD_RATE = 250000
 
-    board_0 = DisplayBoard(PORT, BAUD_RATE)
+    board = DisplayBoard(PORT, BAUD_RATE)
 
     # Pause to establish connection or motors do weird things
     time.sleep(3)
-
-    # board_0.home_motors()
-
-    # for _ in range(1):
-    #     board_0.move([10, 90, 170, 250, 330, 410, 490, 570], absolute=True)
-    #     board_0.move([280]*8, absolute=True)
-    #     board_0.move([570, 490, 410, 330, 250, 170, 90, 10], absolute=True)
-    #     board_0.move([280]*8, absolute=True)
-
-    #     # board_0.move([10]*8, absolute=True)
-    #     # board_0.move([None] + [90]*7, absolute=True)
-    #     # board_0.move([None]*2 + [170]*6, absolute=True)
-    #     # board_0.move([None]*3 + [250]*5, absolute=True)
-    #     # board_0.move([None]*4 + [330]*4, absolute=True)
-    #     # board_0.move([None]*5 + [410]*3, absolute=True)
-    #     # board_0.move([None]*6 + [490]*2, absolute=True)
-    #     # board_0.move([None]*7 + [570], absolute=True)
-    #     # board_0.move([280]*8, absolute=True)
-
-    # board_0.move([10, 10, 10, 10, 10, 10, 10, 10], absolute=True)
+    
