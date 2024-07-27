@@ -10,19 +10,23 @@ class DisplayBoard:
     def write_serial(self, command):
         self.serial.write(str(command+"\n").encode())
 
-    def set_home(self):
+    def home_motors(self):
         """
         Sets home position of all motors to all the way retracted
         """
         # Run motors all the way up and back down in relative positioning mode
-        self.move([630,630,630,630,630,630,630,630], absolute=False)
-        self.move([-630,-630,-630,-630,-630,-630,-630,-630], absolute=False)
+
+        self.move([20]*8, absolute=False)
+        self.move([-15]*8, absolute=False)
+
+        self.move([630]*8, absolute=False)
+        self.move([-630]*8, absolute=False)
 
         # Back off
-        self.move([30,30,30,30,30,30,30,30], absolute=False)
+        self.move([30]*8, absolute=False)
 
         # Reapproach
-        self.move([-25,-25,-25,-25,-25,-25,-25,-25,-25], absolute=False)
+        self.move([-25]*8, absolute=False)
 
         # Set home offset here
         self.write_serial("G90")
@@ -44,10 +48,32 @@ class DisplayBoard:
         
         print(f"Executing {move_type_str} move: {move}")
         self.write_serial(move)
-            
+
+class KineticDisplay:
+    def __init__(self, ports, baudrate):
+        self.boards = [DisplayBoard(port, baudrate) for port in ports]
+        self.current_state = []
+
+    def home_display(self):
+        for board in self.boards:
+            board.home_motors()
+        time.sleep(60)
+
+    def show_pattern(self, file_name):
+        with open(file_name, "r") as pattern_file:
+            rows = pattern_file.readlines()
+            for i in range(len(rows)):
+                state_row = rows[i].split(',')
+                move_positions = [int(pos) for pos in state_row]
+                self.boards[i % len(self.boards)].move(move_positions, absolute=True)
+
+                # TODO: Sending Serial commands too fast is causing G-Code commands to be skipped... make this better
+                if (i+1) % len(self.boards) == 0:
+                    time.sleep(1)
+
 
 if __name__ == "__main__":
-    PORT = "/dev/ttyACM0"
+    PORT = "/dev/ttyACM1"
     BAUD_RATE = 250000
 
     board_0 = DisplayBoard(PORT, BAUD_RATE)
@@ -55,12 +81,22 @@ if __name__ == "__main__":
     # Pause to establish connection or motors do weird things
     time.sleep(3)
 
-    board_0.set_home()
+    # board_0.home_motors()
 
-    for _ in range(1):
-        board_0.move([10, 90, 170, 250, 330, 410, 490, 570], absolute=True)
-        board_0.move([280, 280, 280, 280, 280, 280, 280, 280], absolute=True)
-        board_0.move([570, 490, 410, 330, 250, 170, 90, 10], absolute=True)
-        board_0.move([280, 280, 280, 280, 280, 280, 280, 280], absolute=True)
+    # for _ in range(1):
+    #     board_0.move([10, 90, 170, 250, 330, 410, 490, 570], absolute=True)
+    #     board_0.move([280]*8, absolute=True)
+    #     board_0.move([570, 490, 410, 330, 250, 170, 90, 10], absolute=True)
+    #     board_0.move([280]*8, absolute=True)
 
-    board_0.move([10, 10, 10, 10, 10, 10, 10, 10], absolute=True)
+    #     # board_0.move([10]*8, absolute=True)
+    #     # board_0.move([None] + [90]*7, absolute=True)
+    #     # board_0.move([None]*2 + [170]*6, absolute=True)
+    #     # board_0.move([None]*3 + [250]*5, absolute=True)
+    #     # board_0.move([None]*4 + [330]*4, absolute=True)
+    #     # board_0.move([None]*5 + [410]*3, absolute=True)
+    #     # board_0.move([None]*6 + [490]*2, absolute=True)
+    #     # board_0.move([None]*7 + [570], absolute=True)
+    #     # board_0.move([280]*8, absolute=True)
+
+    # board_0.move([10, 10, 10, 10, 10, 10, 10, 10], absolute=True)
