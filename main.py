@@ -41,7 +41,7 @@ def write_horizontal_diag(file_name, num_rows=5):
     write_state(file_name, [row for _ in range(num_rows)])
 
 if __name__ == "__main__":
-    PORTS = ["/dev/ttyACM1"]
+    PORTS = [f"/dev/ttyACM{i}" for i in range(5)]
     BAUD_RATE = 250000
 
     display = KineticDisplay(ports=PORTS, baudrate=BAUD_RATE)
@@ -50,5 +50,5 @@ if __name__ == "__main__":
     display.home_display()
 
     for _ in range(1):
-        display.show_pattern(file_name="patterns/1_row_wave.txt")
+        display.show_pattern(file_name="patterns/2_row_wave.txt")
 

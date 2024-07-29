@@ -1,6 +1,7 @@
 import serial
 import numpy as np
 import time
+import threading
 
 class DisplayBoard:
     def __init__(self, port, baudrate):
@@ -9,13 +10,14 @@ class DisplayBoard:
 
     def write_serial(self, command):
         self.serial.write(str(command+"\n").encode())
+        # Wait for confirmation
+        self.serial.read_until(expected="ok\n".encode(), size=3)
 
     def home_motors(self):
         """
         Sets home position of all motors to all the way retracted
         """
         # Run motors all the way up and back down in relative positioning mode
-
         self.move([20]*8, absolute=False)
         self.move([-15]*8, absolute=False)
 
@@ -55,9 +57,18 @@ class KineticDisplay:
         self.current_state = []
 
     def home_display(self):
+        homing_threads = []
         for board in self.boards:
-            board.home_motors()
-        time.sleep(60)
+            home_thread = threading.Thread(target=board.home_motors)
+            homing_threads.append(home_thread)
+            home_thread.start()
+
+        for thread in homing_threads:
+            thread.join()
+
+    def move_all(self, positions, absolute=True):
+        for i, row in enumerate(positions):
+            self.boards[i % len(self.boards)].move(row, absolute=absolute)
 
     def show_pattern(self, file_name):
         with open(file_name, "r") as pattern_file:
@@ -67,17 +78,11 @@ class KineticDisplay:
                 move_positions = [int(pos) for pos in state_row]
                 self.boards[i % len(self.boards)].move(move_positions, absolute=True)
 
-                # TODO: Sending Serial commands too fast is causing G-Code commands to be skipped... make this better
-                if (i+1) % len(self.boards) == 0:
-                    time.sleep(1)
-
-
 if __name__ == "__main__":
-    PORT = "/dev/ttyACM1"
+    PORT = "/dev/ttyACM0"
     BAUD_RATE = 250000
 
     board = DisplayBoard(PORT, BAUD_RATE)
 
     # Pause to establish connection or motors do weird things
     time.sleep(3)
-    
