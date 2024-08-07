@@ -47,8 +47,11 @@ if __name__ == "__main__":
     display = KineticDisplay(ports=PORTS, baudrate=BAUD_RATE)
     time.sleep(3)
 
+    print("-----Homing Display-----")
     display.home_display()
+    time.sleep(30)
+    print("-----Homing Complete-----")
 
-    for _ in range(1):
-        display.show_pattern(file_name="patterns/2_row_wave.txt")
+    for _ in range(3):
+        display.show_pattern(file_name="patterns/5_row_wave.txt")
 
