@@ -174,11 +174,11 @@
 //#define Z2_DRIVER_TYPE A4988
 //#define Z3_DRIVER_TYPE A4988
 //#define Z4_DRIVER_TYPE A4988
-#define I_DRIVER_TYPE  A4988
-#define J_DRIVER_TYPE  A4988
-#define K_DRIVER_TYPE  A4988
-#define U_DRIVER_TYPE  A4988
-#define V_DRIVER_TYPE  A4988
+#define I_DRIVER_TYPE  TMC2209
+#define J_DRIVER_TYPE  TMC2209
+#define K_DRIVER_TYPE  TMC2209
+#define U_DRIVER_TYPE  TMC2209
+#define V_DRIVER_TYPE  TMC2209
 //#define W_DRIVER_TYPE  A4988
 //#define E0_DRIVER_TYPE A4988
 //#define E1_DRIVER_TYPE A4988
@@ -1210,7 +1210,7 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 30, 30, 30, 30, 30, 30, 30, 30 }
+#define DEFAULT_MAX_FEEDRATE          { 200, 200, 200, 200, 200, 200, 200, 200 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)

@@ -2731,7 +2731,7 @@
   #define INTERPOLATE      true
 
   #if AXIS_IS_TMC_CONFIG(X)
-    #define X_CURRENT       800        // (mA) RMS current. Multiply by 1.414 for peak current.
+    #define X_CURRENT       500        // (mA) RMS current. Multiply by 1.414 for peak current.
     #define X_CURRENT_HOME  X_CURRENT  // (mA) RMS current for sensorless homing
     #define X_MICROSTEPS     16        // 0..256
     #define X_RSENSE          0.11     // Multiplied x1000 for TMC26X
@@ -2751,7 +2751,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Y)
-    #define Y_CURRENT       800
+    #define Y_CURRENT       500
     #define Y_CURRENT_HOME  Y_CURRENT
     #define Y_MICROSTEPS     16
     #define Y_RSENSE          0.11
@@ -2771,7 +2771,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(Z)
-    #define Z_CURRENT       800
+    #define Z_CURRENT       500
     #define Z_CURRENT_HOME  Z_CURRENT
     #define Z_MICROSTEPS     16
     #define Z_RSENSE          0.11
@@ -2811,7 +2811,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(I)
-    #define I_CURRENT      800
+    #define I_CURRENT      500
     #define I_CURRENT_HOME I_CURRENT
     #define I_MICROSTEPS    16
     #define I_RSENSE         0.11
@@ -2821,7 +2821,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(J)
-    #define J_CURRENT      800
+    #define J_CURRENT      500
     #define J_CURRENT_HOME J_CURRENT
     #define J_MICROSTEPS    16
     #define J_RSENSE         0.11
@@ -2831,7 +2831,7 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(K)
-    #define K_CURRENT      800
+    #define K_CURRENT      500
     #define K_CURRENT_HOME K_CURRENT
     #define K_MICROSTEPS    16
     #define K_RSENSE         0.11
@@ -2841,9 +2841,9 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(U)
-    #define U_CURRENT      800
+    #define U_CURRENT      500
     #define U_CURRENT_HOME U_CURRENT
-    #define U_MICROSTEPS     8
+    #define U_MICROSTEPS     16
     #define U_RSENSE         0.11
     #define U_CHAIN_POS     -1
     //#define U_INTERPOLATE  true
@@ -2851,9 +2851,9 @@
   #endif
 
   #if AXIS_IS_TMC_CONFIG(V)
-    #define V_CURRENT      800
+    #define V_CURRENT      500
     #define V_CURRENT_HOME V_CURRENT
-    #define V_MICROSTEPS     8
+    #define V_MICROSTEPS     16
     #define V_RSENSE         0.11
     #define V_CHAIN_POS     -1
     //#define V_INTERPOLATE  true
